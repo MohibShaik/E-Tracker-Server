@@ -3,7 +3,7 @@ module.exports = {
   HOST: "localhost",
   USER: "postgres",
   PASSWORD: "Mohib123@",
-  DB: "ETrackerDB",
+  DB: "TodoList",
   dialect: "postgres",
   pool: {
     max: 5,
