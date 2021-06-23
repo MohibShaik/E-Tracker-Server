@@ -7,7 +7,7 @@ const app = express();
 var corsOptions = {
   origin: "https://localhost:8081",
 };
-app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(bodyParser.json());
@@ -43,10 +43,12 @@ function initial() {
 
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+// require("./app/routes/task.routes")(app);
+
 
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to E-Tracker application." });
+  res.json({ message: "Welcome to M'list application." });
 });
 
 // set port, listen for requests

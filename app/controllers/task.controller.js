@@ -31,6 +31,21 @@ exports.create = (req, res) => {
     });
 };
 
+// find all tasks
+exports.findAllTasks = (res, req) => {
+  task
+    .findAll()
+    .then((data) => {
+      res.status(200).send({
+        data: data,
+      });
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "something went wrong",
+      });
+    });
+};
 // to find a task by id
 exports.findTaskById = (req, res) => {};
 
