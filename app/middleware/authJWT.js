@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
-const config = require("../config/auth.config.js");
-const db = require("../models");
-const User = db.user;
+import { verify } from "jsonwebtoken";
+import { secret } from "../config/auth.config.js";
+import { user as _user } from "../models";
+const User = _user;
 
 verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -12,7 +12,7 @@ verifyToken = (req, res, next) => {
     });
   }
 
-  jwt.verify(token, config.secret, (err, decoded) => {
+  verify(token, secret, (err, decoded) => {
     if (err) {
       return res.status(401).send({
         message: "Unauthorized!",
@@ -86,4 +86,4 @@ const authJwt = {
   isModerator: isModerator,
   isModeratorOrAdmin: isModeratorOrAdmin,
 };
-module.exports = authJwt;
+export default authJwt;
