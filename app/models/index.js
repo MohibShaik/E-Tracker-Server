@@ -22,9 +22,12 @@ const sequelize = new Sequelize(
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
+
+// table models 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.task = require("../models/task.model.js")(sequelize, Sequelize);
+
 
 
 db.role.belongsToMany(db.user, {
@@ -32,10 +35,18 @@ db.role.belongsToMany(db.user, {
   foreignKey: "roleId",
   otherKey: "userId"
 });
+
 db.user.belongsToMany(db.role, {
   through: "user_roles",
   foreignKey: "userId",
   otherKey: "roleId"
+});
+
+db.user.hasMany(db.task, { as: "tasks" });
+
+db.task.belongsTo(db.user, {
+  foreignKey: "userId",
+  as: "user",
 });
 
 db.ROLES = ["user", "admin", "moderator"];

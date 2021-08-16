@@ -10,7 +10,12 @@ module.exports = function (app) {
     next();
   });
 
-  app.post("/api/Task",controller.create);
+  app.post("/api/Task", controller.create);
+  app.get("/api/Task", controller.getTaskListByUserId);
+  app.put("/api/Task/:id", controller.updateTask);
+  app.get("/api/Task/:id", controller.findTaskById);
+
+
 
   // app.post("/api/auth/signin", controller.signin);
 };
