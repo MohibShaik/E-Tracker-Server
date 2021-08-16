@@ -1,28 +1,16 @@
-module.exports = (app) => {
-  const tasks = require("../controllers/task.controller.js");
+// const { verifySignUp } = require("../middleware");
+const controller = require("../controllers/task.controller");
 
-  var router = require("express").Router();
+module.exports = function (app) {
+  app.use(function (req, res, next) {
+    res.header(
+      "Access-Control-Allow-Headers",
+      "x-access-token, Origin, Content-Type, Accept"
+    );
+    next();
+  });
 
-  // Create a new task
-  router.post("/", tasks.create);
+  app.post("/api/Task",controller.create);
 
-  // Retrieve all tasks
-  router.get("/", tasks.findAll);
-
-  // Retrieve all published tasks
-  // router.get("/published", tasks.findAllPublished);
-
-  // Retrieve a single task with id
-  // router.get("/:id", tasks.findOne);
-
-  // Update a Tutorial with id
-  // router.put("/:id", tasks.update);
-
-  // Delete a Tutorial with id
-  // router.delete("/:id", tasks.delete);
-
-  // Create a new Tutorial
-  // router.delete("/", tasks.deleteAll);
-
-  app.use("/api/tasks", router);
+  // app.post("/api/auth/signin", controller.signin);
 };

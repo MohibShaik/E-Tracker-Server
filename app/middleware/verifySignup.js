@@ -1,6 +1,6 @@
-import { ROLES as _ROLES, user as _user } from "../models";
-const ROLES = _ROLES;
-const User = _user;
+const db = require("../models");
+const ROLES = db.ROLES;
+const User = db.user;
 
 checkDuplicateUsernameOrEmail = (req, res, next) => {
   // Username
@@ -31,6 +31,22 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
 
       next();
     });
+
+    //phone number duplication check
+    // User.findOne({
+    //   where: {
+    //     mobileNumber: req.body.mobileNumber,
+    //   },
+    // }).then((user) => {
+    //   if (user) {
+    //     res.status(400).send({
+    //       message: "Failed! mobile number is already in use!",
+    //     });
+    //     return;
+    //   }
+
+    //   next();
+    // });
   });
 };
 
@@ -54,4 +70,4 @@ const verifySignUp = {
   checkRolesExisted: checkRolesExisted,
 };
 
-export default verifySignUp;
+module.exports = verifySignUp;

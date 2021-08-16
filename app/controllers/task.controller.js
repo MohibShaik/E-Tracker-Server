@@ -1,6 +1,11 @@
 const db = require("../models");
-const task = db.tasks;
+const config = require("../config/auth.config");
+const User = db.user;
+const Role = db.role;
+const Task = db.task;
 const Op = db.Sequelize.Op;
+var jwt = require("jsonwebtoken");
+var bcrypt = require("bcryptjs");
 
 // to save a new task
 exports.create = (req, res) => {
@@ -14,11 +19,13 @@ exports.create = (req, res) => {
   const task = {
     title: req.body.title,
     description: req.body.description,
+    category: req.body.category,
+    dueDate: req.body.dueDate,
+    priority: req.body.priority ? req.body.priority : "low",
     status: req.body.status ? req.body.status : "active",
   };
 
-  task
-    .create(task)
+  Task.create(task)
     .then((data) => {
       res.status(200).send({
         message: "task created successfully",
@@ -46,6 +53,7 @@ exports.findAllTasks = (res, req) => {
       });
     });
 };
+
 // to find a task by id
 exports.findTaskById = (req, res) => {};
 

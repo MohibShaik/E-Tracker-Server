@@ -43,7 +43,7 @@ function initial() {
 
 require("./app/routes/auth.routes")(app);
 // require("./app/routes/user.routes")(app);
-// require("./app/routes/task.routes")(app);
+require("./app/routes/task.routes")(app);
 
 // simple route
 app.get("/", (req, res) => {
@@ -51,7 +51,7 @@ app.get("/", (req, res) => {
 });
 
 // set port, listen for requests
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

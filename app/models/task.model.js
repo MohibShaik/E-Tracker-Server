@@ -9,6 +9,15 @@ module.exports = (sequelize, Sequelize) => {
     status: {
       type: Sequelize.STRING,
     },
+    category: {
+      type: Sequelize.STRING,
+    },
+    dueDate: {
+      type: Sequelize.DATE,
+    },
+    priority: {
+      type: Sequelize.STRING,
+    },
   });
 
   return Task;
