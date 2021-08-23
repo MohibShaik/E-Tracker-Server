@@ -2,20 +2,19 @@ const config = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
-  config.DB,
-  config.USER,
-  config.PASSWORD,
+  "dau0u69l456mba",
+  "nfzcwcenvzwhrz",
+  "6d3f685af7c7df8b02903070071007c1ee07b596f1286d84829acf9748059487",
   {
-    host: config.HOST,
-    dialect: config.dialect,
+    host: "ec2-52-5-247-46.compute-1.amazonaws.com",
+    dialect: "postgres",
     operatorsAliases: false,
-
-    pool: {
-      max: config.pool.max,
-      min: config.pool.min,
-      acquire: config.pool.acquire,
-      idle: config.pool.idle
-    }
+    dialectOptions: {
+      ssl: {
+          require: true,
+          rejectUnauthorized: false
+      }
+  }
   }
 );
 

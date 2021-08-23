@@ -1,6 +1,6 @@
 // const { verifySignUp } = require("../middleware");
 const controller = require("../controllers/task.controller.js");
-const { authJwt } = require("../middleware");
+const authJwt = require("../middleware/authJWT.js");
 
 
 module.exports = function (app) {
@@ -13,13 +13,9 @@ module.exports = function (app) {
   });
 
   app.post("/api/Task", [authJwt.verifyToken], controller.create);
-  app.get("/api/Task", controller.getTaskListByUserId);
-  app.put("/api/Task/:id", controller.updateTask);
-  app.get("/api/Task/:id", controller.findTaskById);
-  app.delete("/api/Task/:id", controller.deleteTaskById);
+  app.get("/api/Task", [authJwt.verifyToken], controller.getTaskListByUserId);
+  app.put("/api/Task/:id", [authJwt.verifyToken], controller.updateTask);
+  app.get("/api/Task/:id", [authJwt.verifyToken], controller.findTaskById);
+  app.delete("/api/Task/:id", [authJwt.verifyToken], controller.deleteTaskById);
 
-
-
-
-  // app.post("/api/auth/signin", controller.signin);
 };
