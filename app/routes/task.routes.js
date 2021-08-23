@@ -1,5 +1,5 @@
 // const { verifySignUp } = require("../middleware");
-const controller = require("../controllers/task.controller");
+const controller = require("../controllers/task.controller.js");
 const { authJwt } = require("../middleware");
 
 
