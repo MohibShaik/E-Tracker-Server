@@ -1,5 +1,7 @@
 // const { verifySignUp } = require("../middleware");
 const controller = require("../controllers/task.controller");
+const { authJwt } = require("../middleware");
+
 
 module.exports = function (app) {
   app.use(function (req, res, next) {
@@ -10,10 +12,12 @@ module.exports = function (app) {
     next();
   });
 
-  app.post("/api/Task", controller.create);
+  app.post("/api/Task", [authJwt.verifyToken], controller.create);
   app.get("/api/Task", controller.getTaskListByUserId);
   app.put("/api/Task/:id", controller.updateTask);
   app.get("/api/Task/:id", controller.findTaskById);
+  app.delete("/api/Task/:id", controller.deleteTaskById);
+
 
 
 

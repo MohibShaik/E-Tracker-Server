@@ -1,12 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
 const app = express();
-
-var corsOptions = {
-  origin: "https://localhost:8081",
-};
 app.use(cors());
 
 // parse requests of content-type - application/json
@@ -19,14 +14,9 @@ const db = require("./app/models");
 
 const Role = db.role;
 
-// db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and Resync Db");
-//   initial();
-// });
-
 db.sequelize.sync().then(() => {
   console.log("Drop and Resync Db");
-  initial();
+  // initial();
 });
 
 function initial() {

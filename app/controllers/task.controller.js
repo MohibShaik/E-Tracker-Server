@@ -7,6 +7,7 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 const { task } = require("../models");
+const { response } = require("express");
 
 // to save a new task
 exports.create = (req, res) => {
@@ -100,22 +101,48 @@ exports.updateTask = (req, res) => {
 
 // to find a task by id
 exports.findTaskById = (req, res) => {
-  const id = rq.params.id;
-
-  Task.findByPk(id).then((data)=>{
-    if(data){
+  console.log(req);
+  const id = req.params.id;
+  Task.findByPk(id).then((data) => {
+    if (data===1) {
       res.status(200).send({
         message: 'success',
         data: data
       })
     }
-  }).catch((error)=>{
-    res.status(200).send({
-      message:'No task found with the given id '
+
+    else{
+      res.status(404).send({
+        message: 'No task found with the given id',
+      })
+    }
+  }).catch((error) => {
+    res.status(404).send({
+      message: 'No task found with the given id '
     })
   })
- };
+};
 
-// to update a task
-
-exports.deleteTaskById = (req, res) => { };
+// to delete a task
+exports.deleteTaskById = (req, res) => {
+  const taskId = req.params.id;
+  Task.destroy({
+    where: {
+      id: taskId
+    }
+  }).then(response => {
+    console.log(response);
+    if (response === 1) {
+      res.status(200).send({
+        message: 'Task deleted successfully'
+      })
+    }
+    else {
+      res.status(400).send({
+        message: 'No task found with the given id'
+      })
+    }
+  }).catch(error => {
+    res.status(500).send(error)
+  })
+};
