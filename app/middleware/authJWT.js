@@ -5,7 +5,7 @@ const User = db.user;
 
 exports.verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
-  console.log(token);
+  console.log(token, 'checking token');
   if (!token) {
     return res.status(403).send({
       message: "No token provided!",
@@ -13,6 +13,7 @@ exports.verifyToken = (req, res, next) => {
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {
+    console.log(req.userId)
     if (err) {
       return res.status(401).send({
         message: "Unauthorized!",

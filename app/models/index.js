@@ -2,19 +2,19 @@ const config = require("../config/db.config.js");
 
 const Sequelize = require("sequelize");
 const sequelize = new Sequelize(
-  "dau0u69l456mba",
-  "nfzcwcenvzwhrz",
-  "6d3f685af7c7df8b02903070071007c1ee07b596f1286d84829acf9748059487",
+  config.DB,
+  config.USER,
+  config.PASSWORD,
   {
-    host: "ec2-52-5-247-46.compute-1.amazonaws.com",
+    host: config.HOST,
     dialect: "postgres",
     operatorsAliases: false,
-    dialectOptions: {
-      ssl: {
-          require: true,
-          rejectUnauthorized: false
-      }
-  }
+    //   dialectOptions: {
+    //     ssl: {
+    //         require: true,
+    //         rejectUnauthorized: false
+    //     }
+    // }
   }
 );
 
@@ -26,6 +26,7 @@ db.sequelize = sequelize;
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.task = require("../models/task.model.js")(sequelize, Sequelize);
+db.transaction = require("../models/transaction.model.js")(sequelize, Sequelize);
 
 
 
@@ -42,8 +43,16 @@ db.user.belongsToMany(db.role, {
 });
 
 db.user.hasMany(db.task, { as: "tasks" });
+db.user.hasMany(db.transaction, { as: "transactions" });
+
 
 db.task.belongsTo(db.user, {
+  foreignKey: "userId",
+  as: "user",
+});
+
+
+db.transaction.belongsTo(db.user, {
   foreignKey: "userId",
   as: "user",
 });

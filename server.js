@@ -39,6 +39,8 @@ function initial() {
 require("./app/routes/auth.routes.js")(app);
 require("./app/routes/user.routes.js")(app);
 require("./app/routes/task.routes.js")(app);
+require("./app/routes/transaction.routes.js")(app);
+
 
 // simple route
 app.get("/", (req, res) => {
