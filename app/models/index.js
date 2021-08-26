@@ -9,12 +9,12 @@ const sequelize = new Sequelize(
     host: config.HOST,
     dialect: "postgres",
     operatorsAliases: false,
-    //   dialectOptions: {
-    //     ssl: {
-    //         require: true,
-    //         rejectUnauthorized: false
-    //     }
-    // }
+      dialectOptions: {
+        ssl: {
+            require: true,
+            rejectUnauthorized: false
+        }
+    }
   }
 );
 
