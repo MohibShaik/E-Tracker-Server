@@ -16,7 +16,7 @@ const Role = db.role;
 
 db.sequelize.sync().then(() => {
   console.log("Drop and Resync Db");
-  initial();
+  // initial();
 });
 
 function initial() {

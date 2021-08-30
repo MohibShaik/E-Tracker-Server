@@ -44,7 +44,8 @@ exports.create = (req, res) => {
 
 //get tasksList by userId 
 exports.getTaskListByUserId = (req, res) => {
-  Task.findAll({ where: { userId: req.body.userId } }).then((data) => {
+  console.log(req.params.userId , req.params ,  'req.body.userId')
+  Task.findAll({ where: { userId: req.params.userId } }).then((data) => {
 
     res.status(200).send({
       data: data,

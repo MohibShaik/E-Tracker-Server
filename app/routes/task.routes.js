@@ -13,7 +13,7 @@ module.exports = function (app) {
   });
 
   app.post("/api/Task", [authJwt.verifyToken], controller.create);
-  app.get("/api/Task", [authJwt.verifyToken], controller.getTaskListByUserId);
+  app.get("/api/Task/:userId", [authJwt.verifyToken], controller.getTaskListByUserId);
   app.put("/api/Task/:id", [authJwt.verifyToken], controller.updateTask);
   app.get("/api/Task/:id", [authJwt.verifyToken], controller.findTaskById);
   app.delete("/api/Task/:id", [authJwt.verifyToken], controller.deleteTaskById);

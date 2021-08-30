@@ -14,6 +14,8 @@ module.exports = (sequelize, Sequelize) => {
     },
     dueDate: {
       type: Sequelize.DATE,
+      allowNull: false,
+      defaultValue: new Date(),
     },
     priority: {
       type: Sequelize.STRING,

@@ -27,13 +27,33 @@ exports.signup = (req, res) => {
           },
         }).then((roles) => {
           user.setRoles(roles).then(() => {
-            res.send({ message: "User registered successfully!" });
+            res.send(
+              {
+                message: "User registered successfully!",
+                data: {
+                  id: user.id,
+                  username: user.username,
+                  email: user.email,
+                  gender: user.gender,
+                  mobileNumber: user.mobileNumber,
+                }
+              }
+            );
           });
         });
       } else {
         // user role = 1
         user.setRoles([1]).then(() => {
-          res.send({ message: "User registered successfully!" });
+          res.send({
+            message: "User registered successfully!", 
+            data: {
+              id: user.id,
+              username: user.username,
+              email: user.email,
+              gender: user.gender,
+              mobileNumber: user.mobileNumber,
+            }
+          });
         });
       }
     })
@@ -80,6 +100,7 @@ exports.signin = (req, res) => {
           email: user.email,
           roles: authorities,
           accessToken: token,
+          gender: user.gender
         });
       });
     })
