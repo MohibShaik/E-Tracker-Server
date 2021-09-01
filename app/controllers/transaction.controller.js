@@ -1,7 +1,7 @@
 const db = require("../models");
 const Transaction = db.transaction;
 
-// to save a new transaction
+// to create a new transaction
 exports.create = (req, res) => {
     console.log(req.body);
     if (!req.body.type) {
@@ -55,7 +55,7 @@ exports.create = (req, res) => {
 
 //get TransactionsList by userId 
 exports.getTransactionListByUserId = (req, res) => {
-    Transaction.findAll({ where: { userId: req.body.userId } }).then((data) => {
+    Transaction.findAll({ where: { userId: req.params.userId } }).then((data) => {
         if (data)
             res.status(200).send({
                 data: data,

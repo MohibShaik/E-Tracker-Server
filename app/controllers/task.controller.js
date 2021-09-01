@@ -44,7 +44,7 @@ exports.create = (req, res) => {
 
 //get tasksList by userId 
 exports.getTaskListByUserId = (req, res) => {
-  console.log(req.params.userId , req.params ,  'req.body.userId')
+  console.log(req.params.userId, req.params, 'req.body.userId')
   Task.findAll({ where: { userId: req.params.userId } }).then((data) => {
 
     res.status(200).send({
@@ -75,19 +75,19 @@ exports.findAllTasks = (res, req) => {
 };
 
 exports.updateTask = (req, res) => {
-  const id = req.params.id;
-  Task.updateTask(req.body, {
+  const TaskId = req.params.id;
+  Task.update(req.body, {
     where: {
-      id: id
+      id: TaskId
     }
   }).then((data) => {
     if (data == 1) {
       res.send({
-        message: "Tutorial was updated successfully."
+        message: "Task was updated successfully."
       });
     } else {
       res.send({
-        message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+        message: `Cannot update Task with id=${TaskId}. Maybe Task was not found or req.body is empty!`
       });
     }
   }).catch((err) => {
@@ -105,14 +105,14 @@ exports.findTaskById = (req, res) => {
   console.log(req);
   const id = req.params.id;
   Task.findByPk(id).then((data) => {
-    if (data===1) {
+    if (data === 1) {
       res.status(200).send({
         message: 'success',
         data: data
       })
     }
 
-    else{
+    else {
       res.status(404).send({
         message: 'No task found with the given id',
       })
