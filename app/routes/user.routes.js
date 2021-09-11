@@ -30,4 +30,8 @@ module.exports = function (app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+
+  // profile api 
+  app.get("/api/user/profile/:userId", [authJwt.verifyToken], controller.getUserProfile);
+
 };

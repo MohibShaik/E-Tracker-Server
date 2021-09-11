@@ -11,10 +11,22 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/Transaction", controller.create);
-    app.get("/api/AllTransactions", controller.getTransactionListByUserId);
-    app.put("/api/Transaction/:id", controller.updateTransaction);
-    app.get("/api/Transaction/:id", controller.findTransactionById);
-    app.delete("/api/Transaction/:id", controller.deleteTransactionById);
+
+    // get apis
+    app.get("/api/Transaction/:transactionId", [authJwt.verifyToken], controller.findTransactionById);
+    app.get("/api/AllTransactions/:userId", [authJwt.verifyToken], controller.getTransactionListByUserId);
+    app.get("/api/transaction-categories", controller.findTransactionCategories);
+    app.get("/api/AllTransactions/:categoryId", controller.getTransactionListByCategoryId);
+
+
+    // post apis 
+    app.post("/api/Transaction", [authJwt.verifyToken], controller.createTransaction);
+
+
+    // put apis 
+    app.put("/api/Transaction/:transactionId", [authJwt.verifyToken], controller.updateTransaction);
+
+    // delete apis 
+    app.delete("/api/Transaction/:transactionId", [authJwt.verifyToken], controller.deleteTransactionById);
 
 };

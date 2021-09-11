@@ -12,10 +12,10 @@ module.exports = function (app) {
     next();
   });
 
-  app.post("/api/Task", [authJwt.verifyToken], controller.create);
-  app.get("/api/Task/:userId", [authJwt.verifyToken], controller.getTaskListByUserId);
-  app.put("/api/Task/:id", [authJwt.verifyToken], controller.updateTask);
-  app.get("/api/Task/:id", [authJwt.verifyToken], controller.findTaskById);
-  app.delete("/api/Task/:id", [authJwt.verifyToken], controller.deleteTaskById);
+  app.post("/api/task", [authJwt.verifyToken], controller.createTask);
+  app.get("/api/task/:userId", [authJwt.verifyToken], controller.getTaskListByUserId);
+  app.put("/api/task/:taskId", [authJwt.verifyToken], controller.updateTask);
+  app.get("/api/task/:taskId", [authJwt.verifyToken], controller.findTaskById);
+  app.delete("/api/task/:taskId", [authJwt.verifyToken], controller.deleteTaskById);
 
 };

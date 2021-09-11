@@ -1,34 +1,30 @@
 module.exports = (sequelize, Sequelize) => {
-    const Transaction = sequelize.define("transaction", {
-        transaction_uid: {
+    const Budget = sequelize.define("budget", {
+        budget_uid: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        transaction_type: {
+        budget_category: {
             type: Sequelize.STRING,
         },
-        payeeName: {
-            type: Sequelize.STRING,
+        budget_category_id: {
+            type: Sequelize.INTEGER,
         },
-        transaction_created_date: {
+        budget_name: {
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
+        budget_created_date: {
             type: Sequelize.DATE,
+            allowNull: false,
             defaultValue: new Date(),
         },
-        transaction_amount: {
-            type: Sequelize.INTEGER,
-        },
-        transaction_category: {
-            type: Sequelize.STRING,
-        },
-        transaction_category_id: {
-            type: Sequelize.INTEGER,
-        },
-        user_uid: {
+        budget_amount: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
-        budget_uid: {
+        created_user_uid: {
             type: Sequelize.INTEGER,
             allowNull: false,
         },
@@ -38,5 +34,5 @@ module.exports = (sequelize, Sequelize) => {
         }
     });
 
-    return Transaction;
+    return Budget;
 };

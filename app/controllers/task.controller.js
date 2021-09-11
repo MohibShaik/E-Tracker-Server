@@ -10,7 +10,7 @@ const { task } = require("../models");
 const { response } = require("express");
 
 // to save a new task
-exports.create = (req, res) => {
+exports.createTask = (req, res) => {
   if (!req.body.title) {
     res.status(400).send({
       message: "Task should have a title",
@@ -19,13 +19,14 @@ exports.create = (req, res) => {
   }
 
   const task = {
-    title: req.body.title,
-    description: req.body.description,
-    category: req.body.category,
-    dueDate: req.body.dueDate,
-    priority: req.body.priority ? req.body.priority : "low",
-    status: req.body.status ? req.body.status : "active",
-    userId: req.body.userId
+    task_title: req.body.title,
+    task_description: req.body.description,
+    task_category_id: req.body.categoryId,
+    task_category: req.body.categoryName,
+    task_due_date: req.body.dueDate,
+    task_priority: req.body.priority ? req.body.priority : "low",
+    created_user_uid: req.body.userId,
+    is_active: req.body.status ? req.body.status : "true",
   };
 
   Task.create(task)
@@ -44,10 +45,9 @@ exports.create = (req, res) => {
 
 //get tasksList by userId 
 exports.getTaskListByUserId = (req, res) => {
-  console.log(req.params.userId, req.params, 'req.body.userId')
-  Task.findAll({ where: { userId: req.params.userId } }).then((data) => {
-
+  Task.findAll({ where: { created_user_uid: req.params.userId } }).then((data) => {
     res.status(200).send({
+      message: "success",
       data: data,
     });
 
@@ -64,21 +64,22 @@ exports.findAllTasks = (res, req) => {
     .findAll()
     .then((data) => {
       res.status(200).send({
+        message: "success",
         data: data,
       });
     })
     .catch((err) => {
       res.status(500).send({
-        message: "something went wrong",
+        message: err.message || "something went wrong",
       });
     });
 };
 
 exports.updateTask = (req, res) => {
-  const TaskId = req.params.id;
+  const TaskId = req.params.taskId;
   Task.update(req.body, {
     where: {
-      id: TaskId
+      task_uid: TaskId
     }
   }).then((data) => {
     if (data == 1) {
@@ -92,19 +93,18 @@ exports.updateTask = (req, res) => {
     }
   }).catch((err) => {
     res.status(500).send({
-      message: "something went wrong",
+      message: err.message || "something went wrong",
     });
   });
 
 
 };
 
-
 // to find a task by id
 exports.findTaskById = (req, res) => {
-  console.log(req);
-  const id = req.params.id;
-  Task.findByPk(id).then((data) => {
+  console.log(req.params.taskId);
+  const TaskId = req.params.taskId;
+  Task.findByPk(TaskId).then((data) => {
     if (data === 1) {
       res.status(200).send({
         message: 'success',
@@ -126,10 +126,10 @@ exports.findTaskById = (req, res) => {
 
 // to delete a task
 exports.deleteTaskById = (req, res) => {
-  const taskId = req.params.id;
+  const TaskId = req.params.taskId;
   Task.destroy({
     where: {
-      id: taskId
+      task_uid: TaskId
     }
   }).then(response => {
     console.log(response);

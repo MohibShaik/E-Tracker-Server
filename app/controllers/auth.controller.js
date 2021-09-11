@@ -16,46 +16,20 @@ exports.signup = (req, res) => {
     gender: req.body.gender,
     mobileNumber: req.body.mobileNumber,
     password: bcrypt.hashSync(req.body.password, 8),
+    profile_img: req.body.profileImg ? req.body.profile_img : '',
+    is_active: req.body.isActive ? req.body.isActive : true
   })
     .then((user) => {
-      if (req.body.roles) {
-        Role.findAll({
-          where: {
-            name: {
-              [Op.or]: req.body.roles,
-            },
-          },
-        }).then((roles) => {
-          user.setRoles(roles).then(() => {
-            res.send(
-              {
-                message: "User registered successfully!",
-                data: {
-                  id: user.id,
-                  username: user.username,
-                  email: user.email,
-                  gender: user.gender,
-                  mobileNumber: user.mobileNumber,
-                }
-              }
-            );
-          });
-        });
-      } else {
-        // user role = 1
-        user.setRoles([1]).then(() => {
-          res.send({
-            message: "User registered successfully!", 
-            data: {
-              id: user.id,
-              username: user.username,
-              email: user.email,
-              gender: user.gender,
-              mobileNumber: user.mobileNumber,
-            }
-          });
-        });
-      }
+      res.status(200).send({
+        message: "User registered successfully!",
+        data: {
+          id: user.user_uid,
+          username: user.username,
+          email: user.email,
+          gender: user.gender,
+          mobileNumber: user.mobileNumber,
+        }
+      });
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });
@@ -89,20 +63,17 @@ exports.signin = (req, res) => {
         expiresIn: 86400, // 24 hours
       });
 
-      var authorities = [];
-      user.getRoles().then((roles) => {
-        for (let i = 0; i < roles.length; i++) {
-          authorities.push("ROLE_" + roles[i].name.toUpperCase());
-        }
-        res.status(200).send({
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          roles: authorities,
-          accessToken: token,
-          gender: user.gender
-        });
+
+      res.status(200).send({
+        id: user.user_uid,
+        username: user.username,
+        email: user.email,
+        accessToken: token,
+        gender: user.gender,
+        mobileNumber: user.mobileNumber,
+        
       });
+
     })
     .catch((err) => {
       res.status(500).send({ message: err.message });

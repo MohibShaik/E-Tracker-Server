@@ -1,9 +1,10 @@
 const db = require("../models");
 const Transaction = db.transaction;
+const TransactionCategories = db.transaction_categories;
+
 
 // to create a new transaction
-exports.create = (req, res) => {
-    console.log(req.body);
+exports.createTransaction = (req, res) => {
     if (!req.body.type) {
         res.status(400).send({
             message: "Transaction type is required",
@@ -16,7 +17,7 @@ exports.create = (req, res) => {
         });
         return;
     }
-    else if (!req.body.categoryName) {
+    else if (!req.body.categoryId) {
         res.status(400).send({
             message: "Transaction should have a category",
         });
@@ -28,14 +29,23 @@ exports.create = (req, res) => {
         });
         return;
     }
+    else if (!req.body.budgetId) {
+        res.status(400).send({
+            message: "budget id is rquired",
+        });
+        return;
+    }
 
     const transaction = {
-        type: req.body.type,
+        transaction_type: req.body.type,
         payeeName: req.body.payeeName,
-        categoryName: req.body.categoryName,
-        transactionDate: req.body.transactionDate,
-        amount: req.body.amount,
-        userId: req.body.userId
+        transaction_created_date: req.body.transactionDate,
+        transaction_amount: req.body.amount,
+        user_uid: req.body.userId,
+        budget_uid: req.body.budgetId,
+        transaction_category: req.body.categoryName,
+        transaction_category_id: req.body.categoryId,
+        is_active: req.body.isActive ? req.body.isActive : true,
     };
 
     Transaction.create(transaction)
@@ -55,9 +65,26 @@ exports.create = (req, res) => {
 
 //get TransactionsList by userId 
 exports.getTransactionListByUserId = (req, res) => {
-    Transaction.findAll({ where: { userId: req.params.userId } }).then((data) => {
+    Transaction.findAll({ where: { user_uid: req.params.userId } }).then((data) => {
         if (data)
             res.status(200).send({
+                message: "success",
+                data: data,
+            });
+
+    }).catch((err) => {
+        res.status(500).send({
+            message: err.message || "something went wrong",
+        });
+    });
+}
+
+// returns the transactions based on catgeoryId 
+exports.getTransactionListByCategoryId = (req, res) => {
+    Transaction.findAll({ where: { transaction_category_id: req.params.categoryId } }).then((data) => {
+        if (data)
+            res.status(200).send({
+                message: "success",
                 data: data,
             });
 
@@ -73,6 +100,7 @@ exports.findAllTransactions = (res, req) => {
     Transaction.findAll().then((data) => {
         if (data)
             res.status(200).send({
+                message: "success",
                 data: data,
             });
     }).catch((err) => {
@@ -83,10 +111,9 @@ exports.findAllTransactions = (res, req) => {
 };
 
 exports.updateTransaction = (req, res) => {
-    const id = req.params.id;
     Transaction.updateTransaction(req.body, {
         where: {
-            id: id
+            transaction_uid: req.params.transactionId
         }
     }).then((data) => {
         if (data == 1) {
@@ -95,7 +122,7 @@ exports.updateTransaction = (req, res) => {
             });
         } else {
             res.send({
-                message: `Cannot update Transaction with id=${id}. Maybe Transaction was not found or req.body is empty!`
+                message: `Cannot update Transaction with id=${req.params.transactionId}. Maybe Transaction was not found or req.body is empty!`
             });
         }
     }).catch((err) => {
@@ -110,10 +137,7 @@ exports.updateTransaction = (req, res) => {
 
 // to find a Transaction by id
 exports.findTransactionById = (req, res) => {
-    console.log(req.params.id);
-    const id = req.params.id;
-    Transaction.findByPk(id).then((data) => {
-        console.log(data);
+    Transaction.findByPk(req.params.transactionId).then((data) => {
         if (data === 1) {
             res.status(200).send({
                 message: 'success',
@@ -135,13 +159,11 @@ exports.findTransactionById = (req, res) => {
 
 // to delete a Transaction
 exports.deleteTransactionById = (req, res) => {
-    const TransactionId = req.params.id;
     Transaction.destroy({
         where: {
-            id: TransactionId
+            transaction_uid: req.params.transactionId
         }
     }).then(response => {
-        console.log(response);
         if (response === 1) {
             res.status(200).send({
                 message: 'Transaction deleted successfully'
@@ -155,4 +177,23 @@ exports.deleteTransactionById = (req, res) => {
     }).catch(error => {
         res.status(500).send(error)
     })
+};
+
+exports.findTransactionCategories = (request, response) => {
+    TransactionCategories.findAll().then((data) => {
+        console.log('success');
+
+        if (data) {
+            response.status(200).send({
+                message: 'success',
+                data: data
+            });
+        }
+
+    }).catch((err) => {
+        console.log(err, 'error');
+        res.status(500).send({
+            message: err.message || "something went wrong",
+        });
+    });
 };

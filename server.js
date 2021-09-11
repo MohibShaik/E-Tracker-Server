@@ -13,33 +13,40 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const db = require("./app/models");
 
 const Role = db.role;
+const TransactionCategories = db.transaction_categories;
 
 db.sequelize.sync().then(() => {
   console.log("Drop and Resync Db");
-  // initial();
+  // loadTransactionCategories();
 });
 
-function initial() {
-  Role.create({
-    id: 1,
-    name: "user",
+const transaction_categories = require("./transaction-categories.json");
+console.log(transaction_categories);
+
+transaction_categories.forEach(x => {
+  loadTransactionCategories(x.transaction_category_name, x.is_active)
+})
+
+
+async function loadTransactionCategories(categoryName, isActive) {
+  await TransactionCategories.create({
+    transaction_category_name: categoryName,
+    is_active: isActive
+  }).then((data) => {
+    console.log('transaction category loaded successfully');
+  }).catch((err) => {
+    console.log(err.message)
   });
 
-  Role.create({
-    id: 2,
-    name: "moderator",
-  });
-
-  Role.create({
-    id: 3,
-    name: "admin",
-  });
 }
+
 
 require("./app/routes/auth.routes.js")(app);
 require("./app/routes/user.routes.js")(app);
 require("./app/routes/task.routes.js")(app);
 require("./app/routes/transaction.routes.js")(app);
+require("./app/routes/budget.routes.js")(app);
+
 
 
 // simple route

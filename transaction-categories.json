@@ -1,0 +1,42 @@
+[
+  {
+    "transaction_category_name": "Groceries",
+    "is_active": true
+  },
+  {
+    "transaction_category_name": "Automobile",
+    "is_active": true
+  },
+  {
+    "transaction_category_name": "Clothing",
+    "is_active": true
+  },
+  {
+    "transaction_category_name": "Fitness",
+    "is_active": true
+  },
+  {
+    "transaction_category_name": "Personal Loan",
+    "is_active": true
+  },
+  {
+    "transaction_category_name": "Home Loan",
+    "is_active": true
+  },
+  {
+    "transaction_category_name": "Gadgets",
+    "is_active": true
+  },
+  {
+    "transaction_category_name": "Books",
+    "is_active": true
+  },
+  {
+    "transaction_category_name": "Credit card bills",
+    "is_active": true
+  },
+  {
+    "transaction_category_name": "Travel Expenses",
+    "is_active": true
+  }
+]
