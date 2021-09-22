@@ -20,12 +20,12 @@ db.sequelize.sync().then(() => {
   // loadTransactionCategories();
 });
 
-const transaction_categories = require("./transaction-categories.json");
-console.log(transaction_categories);
+// const transaction_categories = require("./transaction-categories.json");
+// console.log(transaction_categories);
 
-transaction_categories.forEach(x => {
-  loadTransactionCategories(x.transaction_category_name, x.is_active)
-})
+// transaction_categories.forEach(x => {
+//   loadTransactionCategories(x.transaction_category_name, x.is_active)
+// })
 
 
 async function loadTransactionCategories(categoryName, isActive) {

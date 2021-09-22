@@ -17,6 +17,8 @@ module.exports = function (app) {
     app.get("/api/AllTransactions/:userId", [authJwt.verifyToken], controller.getTransactionListByUserId);
     app.get("/api/transaction-categories", controller.findTransactionCategories);
     app.get("/api/AllTransactions/:categoryId", controller.getTransactionListByCategoryId);
+    app.get("/api/budgetTransactions/:budgetId", controller.getTransactionListByBudgetId);
+
 
 
     // post apis 

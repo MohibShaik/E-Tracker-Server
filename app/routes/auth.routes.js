@@ -9,8 +9,6 @@ module.exports = function (app) {
     );
     next();
   });
-
-  console.log(middleware);
   app.post(
     "/api/auth/signup",
     [middleware.checkDuplicateUsernameOrEmail],

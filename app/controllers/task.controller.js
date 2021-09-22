@@ -102,7 +102,6 @@ exports.updateTask = (req, res) => {
 
 // to find a task by id
 exports.findTaskById = (req, res) => {
-  console.log(req.params.taskId);
   const TaskId = req.params.taskId;
   Task.findByPk(TaskId).then((data) => {
     if (data === 1) {
@@ -132,7 +131,6 @@ exports.deleteTaskById = (req, res) => {
       task_uid: TaskId
     }
   }).then(response => {
-    console.log(response);
     if (response === 1) {
       res.status(200).send({
         message: 'Task deleted successfully'

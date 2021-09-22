@@ -1,5 +1,6 @@
 const db = require("../models");
 const Transaction = db.transaction;
+const Budget = db.budget;
 const TransactionCategories = db.transaction_categories;
 
 
@@ -17,12 +18,7 @@ exports.createTransaction = (req, res) => {
         });
         return;
     }
-    else if (!req.body.categoryId) {
-        res.status(400).send({
-            message: "Transaction should have a category",
-        });
-        return;
-    }
+
     else if (!req.body.amount) {
         res.status(400).send({
             message: "Transaction amount is rquired",
@@ -31,37 +27,52 @@ exports.createTransaction = (req, res) => {
     }
     else if (!req.body.budgetId) {
         res.status(400).send({
-            message: "budget id is rquired",
+            message: "budget id is required",
         });
         return;
     }
 
-    const transaction = {
-        transaction_type: req.body.type,
-        payeeName: req.body.payeeName,
-        transaction_created_date: req.body.transactionDate,
-        transaction_amount: req.body.amount,
-        user_uid: req.body.userId,
-        budget_uid: req.body.budgetId,
-        transaction_category: req.body.categoryName,
-        transaction_category_id: req.body.categoryId,
-        is_active: req.body.isActive ? req.body.isActive : true,
-    };
+    if (req.body.budgetId) {
 
-    Transaction.create(transaction)
-        .then((data) => {
-            if (data)
-                res.status(200).send({
-                    message: "Transaction created successfully",
-                    data: data
-                });
+        Budget.findByPk(req.body.budgetId).then((data) => {
+            if (data) {
+                const transaction = {
+                    transaction_type: req.body.type,
+                    payeeName: req.body.payeeName,
+                    transaction_created_date: req.body.transactionDate,
+                    transaction_amount: req.body.amount,
+                    user_uid: req.body.userId,
+                    budget_uid: req.body.budgetId,
+                    transaction_category: data?.budget_category,
+                    transaction_category_id: data?.budget_category_id,
+                    is_active: req.body.isActive ? req.body.isActive : true,
+                };
+
+                Transaction.create(transaction)
+                    .then((data) => {
+                        if (data)
+                            res.status(200).send({
+                                message: "Transaction created successfully",
+                                data: data
+                            });
+                    })
+                    .catch((err) => {
+                        res.status(500).send({
+                            message: err.message || "something went wrong",
+                        });
+                    });
+
+            }
+        }).catch((error) => {
+            res.status(404).send({
+                message: 'No budget found with the given id '
+            })
         })
-        .catch((err) => {
-            res.status(500).send({
-                message: err.message || "something went wrong",
-            });
-        });
+    }
+
+
 };
+
 
 //get TransactionsList by userId 
 exports.getTransactionListByUserId = (req, res) => {
@@ -82,6 +93,21 @@ exports.getTransactionListByUserId = (req, res) => {
 // returns the transactions based on catgeoryId 
 exports.getTransactionListByCategoryId = (req, res) => {
     Transaction.findAll({ where: { transaction_category_id: req.params.categoryId } }).then((data) => {
+        if (data)
+            res.status(200).send({
+                message: "success",
+                data: data,
+            });
+
+    }).catch((err) => {
+        res.status(500).send({
+            message: err.message || "something went wrong",
+        });
+    });
+}
+
+exports.getTransactionListByBudgetId = (req, res) => {
+    Transaction.findAll({ where: { budget_uid: req.params.budgetId } }).then((data) => {
         if (data)
             res.status(200).send({
                 message: "success",
@@ -181,8 +207,6 @@ exports.deleteTransactionById = (req, res) => {
 
 exports.findTransactionCategories = (request, response) => {
     TransactionCategories.findAll().then((data) => {
-        console.log('success');
-
         if (data) {
             response.status(200).send({
                 message: 'success',
@@ -191,7 +215,6 @@ exports.findTransactionCategories = (request, response) => {
         }
 
     }).catch((err) => {
-        console.log(err, 'error');
         res.status(500).send({
             message: err.message || "something went wrong",
         });

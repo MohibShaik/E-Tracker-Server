@@ -108,20 +108,13 @@ exports.deleteBudget = (req, res) => {
 
 exports.findBudgetByBudgetId = (req, res) => {
     const budgetId = req.params.budgetId;
-    console.log(budgetId , 'budgetId')
+    console.log(budgetId, 'budgetId hiiiiiiiiiiiiiiiiii')
     Budget.findByPk(req.params.budgetId).then((data) => {
-        if (data === 1) {
-            res.status(200).send({
-                message: 'success',
-                data: data
-            })
-        }
-
-        else {
-            res.status(404).send({
-                message: 'No budget found with the given id',
-            })
-        }
+        console.log(data, 'data');
+        res.status(200).send({
+            message: 'success',
+            data: data
+        })
     }).catch((error) => {
         res.status(404).send({
             message: 'No budget found with the given id '

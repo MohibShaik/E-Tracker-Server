@@ -31,7 +31,6 @@ exports.getUserProfile = (request, response) => {
       data: data
     })
   }).catch((error) => {
-    console.log(error, 'error');
     response.status(500).send({
       error
     })
