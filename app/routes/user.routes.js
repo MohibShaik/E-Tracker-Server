@@ -1,37 +1,38 @@
-// const { authJwt } = require("../middleware");
-const authJwt = require("../middleware/authJWT.js");
-const controller = require("../controllers/user.controller.js");
+// // const { authJwt } = require("../middleware");
+// const authJwt = require('../middleware/authJWT.js');
+// const controller = require('../controllers/user.controller.js');
 
-module.exports = function (app) {
-  app.use(function (req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
-  });
+// var express = require('express');
+// var router = express.Router();
 
-  app.get("/api/test/all", controller.allAccess);
+// const userRoute = (router) => {
+//   app.get('/api/test/all', controller.allAccess);
 
-  app.get(
-    "/api/test/user",
-    [authJwt.verifyToken],
-    controller.userBoard
-  );
+//   app.get(
+//     '/api/test/user',
+//     [authJwt.verifyToken],
+//     controller.userBoard
+//   );
 
-  app.get(
-    "/api/test/mod",
-    [authJwt.verifyToken, authJwt.isModerator],
-    controller.moderatorBoard
-  );
+//   app.get(
+//     '/api/test/mod',
+//     [authJwt.verifyToken, authJwt.isModerator],
+//     controller.moderatorBoard
+//   );
 
-  app.get(
-    "/api/test/admin",
-    [authJwt.verifyToken, authJwt.isAdmin],
-    controller.adminBoard
-  );
+//   app.get(
+//     '/api/test/admin',
+//     [authJwt.verifyToken, authJwt.isAdmin],
+//     controller.adminBoard
+//   );
 
-  // profile api 
-  app.get("/api/user/profile/:userId", [authJwt.verifyToken], controller.getUserProfile);
+//   // profile api
+//   app.get(
+//     '/api/user/profile/:userId',
+//     [authJwt.verifyToken],
+//     controller.getUserProfile
+//   );
+// };
 
-};
+// exports.userRoute = userRoute;
+

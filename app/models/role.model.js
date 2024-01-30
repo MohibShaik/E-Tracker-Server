@@ -1,13 +1,15 @@
-module.exports = (sequelize, Sequelize) => {
-  const Role = sequelize.define("roles", {
-    role_uid: {
-      type: Sequelize.INTEGER,
-      primaryKey: true
-    },
-    role_name: {
-      type: Sequelize.STRING
-    }
-  });
+const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-  return Role;
-};
+const roleSchema = new Schema({
+  role_uid: {
+    type: Number,
+    primaryKey: true,
+  },
+  role_name: {
+    type: String,
+  },
+});
+
+module.exports = mongoose.model('role', roleSchema);
+

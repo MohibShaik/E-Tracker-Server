@@ -1,10 +1,5 @@
-const db = require("../models");
 const config = require("../config/auth.config");
-const User = db.user;
-const Role = db.role;
-
-const Op = db.Sequelize.Op;
-
+const User = require('../models/user.model');
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
@@ -13,10 +8,8 @@ exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
     email: req.body.email,
-    gender: req.body.gender,
     mobileNumber: req.body.mobileNumber,
     password: bcrypt.hashSync(req.body.password, 8),
-    profile_img: req.body.profileImg ? req.body.profile_img : '',
     is_active: req.body.isActive ? req.body.isActive : true
   })
     .then((user) => {
@@ -26,7 +19,6 @@ exports.signup = (req, res) => {
           id: user.user_uid,
           username: user.username,
           email: user.email,
-          gender: user.gender,
           mobileNumber: user.mobileNumber,
         }
       });

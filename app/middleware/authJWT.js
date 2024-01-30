@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
 const config = require("../config/auth.config.js");
-const db = require("../models");
-const User = db.user;
+const User = require("../models/user.model.js");
 
 exports.verifyToken = (req, res, next) => {
   let token = req.headers["x-access-token"];
@@ -78,11 +77,3 @@ exports.isModeratorOrAdmin = (req, res, next) => {
     });
   });
 };
-
-// const authJwt = {
-//   verifyToken: verifyToken,
-//   isAdmin: isAdmin,
-//   isModerator: isModerator,
-//   isModeratorOrAdmin: isModeratorOrAdmin,
-// };
-// module.exports = authJwt;
